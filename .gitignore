@@ -9,7 +9,6 @@ target/
 .idea/encodings.xml
 .idea/compiler.xml
 .idea/libraries/
-.idea/libraries/
 .idea/misc.xml
 *.iws
 *.iml
