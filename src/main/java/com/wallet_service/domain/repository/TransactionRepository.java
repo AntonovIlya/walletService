@@ -25,7 +25,7 @@ public class TransactionRepository {
     /**
      * Adds a transaction ID to the store.
      *
-     * @param transactionID transaction ID
+     * @param transaction transaction
      */
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
@@ -34,7 +34,7 @@ public class TransactionRepository {
     /**
      * Returns true if the transaction ID is not unique.
      *
-     * @param transactionID transaction ID
+     * @param transaction transaction
      */
     public boolean hasTransaction(Transaction transaction) {
         return transactions.contains(transaction);
