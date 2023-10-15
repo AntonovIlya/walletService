@@ -18,17 +18,27 @@ class BankAccountTest {
     }
 
     @Test
-    @Order(2)
-    void payment() {
+    @Order(3)
+    void paymentPositive() {
         //Arrange
-        double paymentValue1 = 500;
-        double paymentValue2 = 1500;
+        double paymentValue = 500;
 
         //Act
 
         //Assert
-        Assertions.assertFalse(account.payment(paymentValue2));
-        Assertions.assertTrue(account.payment(paymentValue1));
+        Assertions.assertTrue(account.payment(paymentValue));
+    }
+
+    @Test
+    @Order(2)
+    void paymentNegative() {
+        //Arrange
+        double paymentValue = 1500;
+
+        //Act
+
+        //Assert
+        Assertions.assertFalse(account.payment(paymentValue));
     }
 
     @Test

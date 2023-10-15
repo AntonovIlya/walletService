@@ -4,7 +4,6 @@ import com.wallet_service.domain.model.BankAccount;
 import com.wallet_service.domain.model.User;
 import com.wallet_service.domain.repository.Log;
 import com.wallet_service.domain.repository.Logger;
-import com.wallet_service.domain.repository.TransactionRepository;
 import com.wallet_service.domain.repository.UserRepository;
 
 import java.util.Optional;
@@ -23,9 +22,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     /**
-     * Transaction system.
+     * Transaction service.
      */
-    private final TransactionRepository transactionRepository;
+    private final TransactionService transactionService;
 
     /**
      * Audit system.
@@ -39,7 +38,7 @@ public class UserService {
 
     public UserService() {
         userRepository = new UserRepository();
-        transactionRepository = new TransactionRepository();
+        transactionService = new TransactionService();
         usersActionsRepository = new Logger();
         scanner = new Scanner(System.in);
     }
@@ -109,6 +108,7 @@ public class UserService {
 
     /**
      * Provides a menu for the admin to work through the console.
+     *
      * @param currentUser current authorized user
      */
     private void selectAdminOperation(User currentUser) {
@@ -132,6 +132,7 @@ public class UserService {
 
     /**
      * Provides a menu for the user to work through the console.
+     *
      * @param currentUser current authorized user
      */
     private void selectUserOperation(User currentUser) {
@@ -146,46 +147,8 @@ public class UserService {
             String action = scanner.nextLine();
             switch (action) {
                 case ("1") -> System.out.println("Баланс: " + account.getBalance());
-                case ("2") -> {
-                    System.out.println("Введите идентификатор транзакции:");
-                    String paymentTransactionID = scanner.nextLine();
-                    if (!transactionRepository.hasTransaction(paymentTransactionID)) {
-                        transactionRepository.addTransaction(paymentTransactionID);
-                        System.out.println("Введите сумму:");
-                        String refillValue = scanner.nextLine();
-                        double result;
-                        try {
-                            result = Double.parseDouble(refillValue);
-                        } catch (NumberFormatException | NullPointerException exception) {
-                            System.out.println("Ошибка. Неверный формат.");
-                            break;
-                        }
-                        if (!account.payment(result)) {
-                            System.out.println("Ошибка. Недостаточно средств.");
-                        }
-                    } else {
-                        System.out.println("Ошибка. Идентификатор не уникален.");
-                    }
-                }
-                case ("3") -> {
-                    System.out.println("Введите идентификатор транзакции:");
-                    String refillTransactionID = scanner.nextLine();
-                    if (!transactionRepository.hasTransaction(refillTransactionID)) {
-                        transactionRepository.addTransaction(refillTransactionID);
-                        System.out.println("Введите сумму:");
-                        String refillValue = scanner.nextLine();
-                        double result;
-                        try {
-                            result = Double.parseDouble(refillValue);
-                        } catch (NumberFormatException | NullPointerException exception) {
-                            System.out.println("Ошибка. Неверный формат");
-                            break;
-                        }
-                        account.refill(result);
-                    } else {
-                        System.out.println("Ошибка. Идентификатор не уникален.");
-                    }
-                }
+                case ("2") -> transactionService.paymentTransaction(currentUser);
+                case ("3") -> transactionService.refill(currentUser);
                 case ("4") -> {
                     System.out.println("История операций: ");
                     System.out.println(account.getOperationHistory());

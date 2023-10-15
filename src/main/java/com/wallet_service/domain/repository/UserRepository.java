@@ -13,7 +13,7 @@ import java.util.Optional;
 public class UserRepository {
 
     /**
-     * Data structure for storing history.
+     * Data structure for storing users.
      */
     private final Map<Integer, User> users;
 

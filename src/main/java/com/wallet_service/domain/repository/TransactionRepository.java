@@ -1,5 +1,7 @@
 package com.wallet_service.domain.repository;
 
+import com.wallet_service.domain.model.Transaction;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +13,7 @@ public class TransactionRepository {
     /**
      * Data structure for storing transaction ID.
      */
-    private final Set<String> transactions;
+    private final Set<Transaction> transactions;
 
     /**
      * Constructs a set implementation.
@@ -25,8 +27,8 @@ public class TransactionRepository {
      *
      * @param transactionID transaction ID
      */
-    public void addTransaction(String transactionID) {
-        transactions.add(transactionID);
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
     }
 
     /**
@@ -34,7 +36,7 @@ public class TransactionRepository {
      *
      * @param transactionID transaction ID
      */
-    public boolean hasTransaction(String transactionID) {
-        return transactions.contains(transactionID);
+    public boolean hasTransaction(Transaction transaction) {
+        return transactions.contains(transaction);
     }
 }
