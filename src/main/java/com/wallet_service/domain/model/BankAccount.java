@@ -2,6 +2,8 @@ package com.wallet_service.domain.model;
 
 import com.wallet_service.domain.repository.Log;
 import com.wallet_service.domain.repository.Logger;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A class representing the user's bank account.
@@ -11,31 +13,33 @@ public class BankAccount {
     /**
      * Account ID.
      */
-    private final String id;
+    @Setter
+    @Getter
+    private int id;
 
     /**
      * Account balance.
      */
+    @Setter
     private double balance = 0;
 
     /**
      * Account transaction history.
      */
-    private final Log operationsHistory;
+    private final Log logBankAccountOperations;
 
     /**
      * Constructs an account with a specific ID.
      */
-    public BankAccount(String id) {
-        this.id = id;
-        operationsHistory = new Logger();
+    public BankAccount() {
+        logBankAccountOperations = new Logger("logOperations");
     }
 
     /**
      * Returns the current account balance.
      */
     public double getBalance() {
-        operationsHistory.log("Запрос баланса. Текущий баланс: " + balance);
+        logBankAccountOperations.log("Account id: " + id + ". Запрос баланса. Текущий баланс: " + balance);
         return balance;
     }
 
@@ -46,7 +50,7 @@ public class BankAccount {
      */
     public boolean payment(double value) {
         if (balance > value) {
-            operationsHistory.log("Снятие средств: -" + value);
+            logBankAccountOperations.log("Account id: " + id + ". Снятие средств: -" + value);
             balance = balance - value;
             return true;
         }
@@ -60,13 +64,13 @@ public class BankAccount {
      */
     public void refill(double value) {
         balance = balance + value;
-        operationsHistory.log("Пополнение средств: +" + value);
+        logBankAccountOperations.log("Account id: " + id + ". Пополнение средств: +" + value);
     }
 
     /**
      * Returns the transaction history of the account.
      */
     public String getOperationHistory() {
-        return operationsHistory.getHistory();
+        return logBankAccountOperations.getHistory();
     }
 }

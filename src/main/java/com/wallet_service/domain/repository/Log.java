@@ -8,7 +8,8 @@ public interface Log {
     /**
      * Logging a message.
      *
-     * @param message сообщение
+     * @param user    user
+     * @param message message
      */
     void log(String message);
 

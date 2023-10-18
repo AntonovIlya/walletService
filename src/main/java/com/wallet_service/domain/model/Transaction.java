@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
  * Class describing a unit of banking transaction.
  */
 @ToString
+@Getter
 @RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Transaction {
@@ -27,16 +28,6 @@ public class Transaction {
      */
     @EqualsAndHashCode.Include
     private final User user;
-    /**
-     * Time of the transaction.
-     */
-    @Getter
-    private String dateTime;
 
-    /**
-     * Transaction registration
-     */
-    public void perform() {
-        dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS").format(System.currentTimeMillis());
-    }
+    private String dateTime;
 }

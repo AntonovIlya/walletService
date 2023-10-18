@@ -2,6 +2,7 @@ package com.wallet_service.domain.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Objects;
@@ -14,6 +15,9 @@ import java.util.Objects;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
+    @Getter
+    @Setter
+    private int id;
     /**
      * User login.
      */
@@ -30,7 +34,8 @@ public class User {
     /**
      * User's bank account.
      */
-    private final BankAccount account;
+    @Setter
+    private BankAccount account;
 
     /**
      * Creates a user with a login and password and links a bank account.
@@ -38,6 +43,5 @@ public class User {
     public User(String login, String password) {
         this.login = login;
         this.password = password;
-        account = new BankAccount(String.valueOf(Objects.hash(login, password)));
     }
 }

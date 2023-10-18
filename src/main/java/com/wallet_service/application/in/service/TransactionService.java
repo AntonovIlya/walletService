@@ -26,6 +26,7 @@ public class TransactionService {
 
     /**
      * Checking the transaction ID and performing a payment operation.
+     *
      * @param user current authorized user
      */
     public void paymentTransaction(User user) {
@@ -47,8 +48,7 @@ public class TransactionService {
                 System.out.println("Ошибка. Недостаточно средств.");
             } else {
                 transaction.setValue(result);
-                transaction.perform();
-                transactionRepository.addTransaction(transaction);
+                transactionRepository.addTransaction(transaction, "payment");
             }
         } else {
             System.out.println("Ошибка. Идентификатор не уникален.");
@@ -57,6 +57,7 @@ public class TransactionService {
 
     /**
      * Checking the transaction ID and performing a refill operation
+     *
      * @param user current authorized user
      */
     public void refill(User user) {
@@ -76,8 +77,7 @@ public class TransactionService {
             }
             account.refill(result);
             transaction.setValue(result);
-            transaction.perform();
-            transactionRepository.addTransaction(transaction);
+            transactionRepository.addTransaction(transaction, "refill");
         } else {
             System.out.println("Ошибка. Идентификатор не уникален.");
         }
