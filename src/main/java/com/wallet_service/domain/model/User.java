@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Objects;
-
 /**
  * A class that describes a user of a banking service through authorization using a login and password.
  */

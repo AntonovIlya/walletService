@@ -2,8 +2,6 @@ package com.wallet_service.domain.model;
 
 import lombok.*;
 
-import java.text.SimpleDateFormat;
-
 /**
  * Class describing a unit of banking transaction.
  */
