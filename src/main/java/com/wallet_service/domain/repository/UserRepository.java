@@ -28,27 +28,30 @@ public class UserRepository {
     public void userRegistration(User user) {
         BankAccount userBankAccount = new BankAccount();
         user.setAccount(userBankAccount);
-        String createNewBankAccount = "insert into wallet_service.bank_accounts(balance) values(0);";
         String createNewUser = "insert into wallet_service.users(login, password) values (?, ?);";
-        String getBankAccountID = "select bank_account_id from wallet_service.users where login=? and password=?;";
+        String getUserID = "select id from wallet_service.users where login=? and password=?;";
+        String createNewBankAccount = "insert into wallet_service.bank_accounts(user_id, balance) values(?, 0);";
 
         try {
             connection.setAutoCommit(false);
-            PreparedStatement registrationBankAccount = connection.prepareStatement(createNewBankAccount);
-            registrationBankAccount.executeUpdate();
 
             PreparedStatement registrationUser = connection.prepareStatement(createNewUser);
             registrationUser.setString(1, user.getLogin());
             registrationUser.setString(2, user.getPassword());
             registrationUser.executeUpdate();
 
-            PreparedStatement getID = connection.prepareStatement(getBankAccountID);
+            PreparedStatement getID = connection.prepareStatement(getUserID);
             getID.setString(1, user.getLogin());
             getID.setString(2, user.getPassword());
             ResultSet resultSet = getID.executeQuery();
             while (resultSet.next()) {
                 userBankAccount.setId(resultSet.getInt(1));
             }
+
+            PreparedStatement registrationBankAccount = connection.prepareStatement(createNewBankAccount);
+            registrationBankAccount.setInt(1, userBankAccount.getId());
+            registrationBankAccount.executeUpdate();
+
             connection.commit();
             connection.setAutoCommit(true);
             System.out.println("Пользователь успешно зарегестрирован.");
@@ -95,7 +98,11 @@ public class UserRepository {
     public User getUser(String login, String password) {
         User user = new User(login, password);
         BankAccount userBankAccount = new BankAccount();
-        String getIDs = "select bank_account_id,id from wallet_service.users where login = ? and password = ?;";
+        String getIDs = "select b.id, user_id, balance\n" +
+                "from wallet_service.bank_accounts b\n" +
+                "         join wallet_service.users u on u.id = b.user_id\n" +
+                "where u.login = ?\n" +
+                "  and u.password = ?;";
         try {
             PreparedStatement getID = connection.prepareStatement(getIDs);
             getID.setString(1, login);
@@ -104,16 +111,8 @@ public class UserRepository {
             while (accountIDResult.next()) {
                 userBankAccount.setId(accountIDResult.getInt(1));
                 user.setId(accountIDResult.getInt(2));
+                userBankAccount.setBalance(accountIDResult.getInt(3));
             }
-
-            String getBankAccountBalance = "select balance from wallet_service.bank_accounts where id = ?;";
-            PreparedStatement getBalance = connection.prepareStatement(getBankAccountBalance);
-            getBalance.setInt(1, userBankAccount.getId());
-            ResultSet accountBalance = getBalance.executeQuery();
-            while (accountBalance.next()) {
-                userBankAccount.setBalance(accountBalance.getInt(1));
-            }
-
         } catch (SQLException e) {
             System.err.println("Произошла ошибка: " + e.getMessage());
         }

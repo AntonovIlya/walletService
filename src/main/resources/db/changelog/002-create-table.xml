@@ -11,13 +11,13 @@
             </column>
             <column name="login" type="varchar(255)"/>
             <column name="password" type="varchar(255)"/>
-            <column name="bank_account_id" type="serial"/>
         </createTable>
 
         <createTable schemaName="wallet_service" tableName="bank_accounts">
             <column name="id" type="serial">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="user_id" type="int"/>
             <column name="balance" type="double precision"/>
         </createTable>
 

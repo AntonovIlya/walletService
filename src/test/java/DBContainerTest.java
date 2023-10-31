@@ -9,13 +9,19 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.sql.SQLException;
-
-import static com.wallet_service.domain.db.DBConnection.connection;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
 
 @Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DBContainerTest {
+
+    private static final String USER;
+    private static final String PASSWORD;
+    private static final String DB;
+    private static final int PORT;
 
     private static TransactionRepository transactionRepository;
     private static UserRepository userRepository;
@@ -23,23 +29,34 @@ public class DBContainerTest {
     private static User user;
     private static Transaction transaction;
 
+    static {
+        File file = new File(".env");
+
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileReader(file));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        USER = properties.getProperty("POSTGRES_USER");
+        PASSWORD = properties.getProperty("POSTGRES_PASSWORD");
+        DB = properties.getProperty("POSTGRES_DB");
+        PORT = Integer.parseInt(properties.getProperty("PORT"));
+    }
+
     @Container
     private static final GenericContainer<?> db = new GenericContainer<>("postgres:latest")
-            .withEnv("POSTGRES_USER", "pguser")
-            .withEnv("POSTGRES_PASSWORD", "pgpassword")
-            .withEnv("POSTGRES_DB", "pgdb")
-            .withExposedPorts(5432);
+            .withEnv("POSTGRES_USER", USER)
+            .withEnv("POSTGRES_PASSWORD", PASSWORD)
+            .withEnv("POSTGRES_DB", DB)
+            .withExposedPorts(PORT);
+
 
     @BeforeAll
     static void beforeAll() {
-        int port = db.getMappedPort(5432);
-        DBConnection.setCustomPort(port);
+        DBConnection.setCustomPort(db.getMappedPort(PORT));
         DBConnection.startConnection();
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
         transactionRepository = new TransactionRepository();
         userRepository = new UserRepository();
         userBankAccount = new BankAccount();
@@ -49,11 +66,11 @@ public class DBContainerTest {
 
     @AfterAll
     static void closeConnection() {
+        DBConnection.closeConnection();
         transactionRepository = null;
         userRepository = null;
         userBankAccount = null;
         user = null;
-        DBConnection.closeConnection();
     }
 
 

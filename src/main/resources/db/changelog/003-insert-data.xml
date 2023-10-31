@@ -5,12 +5,12 @@
 
     <changeSet id="003-insert-data" author="jadeFour">
         <addForeignKeyConstraint baseTableSchemaName="wallet_service"
-                                 baseColumnNames="bank_account_id"
-                                 baseTableName="users"
-                                 constraintName="fk_users_bank_accounts"
+                                 baseColumnNames="user_id"
+                                 baseTableName="bank_accounts"
+                                 constraintName="fk_bank_accounts_users"
                                  referencedTableSchemaName="wallet_service"
                                  referencedColumnNames="id"
-                                 referencedTableName="bank_accounts"/>
+                                 referencedTableName="users"/>
         <addForeignKeyConstraint baseTableSchemaName="wallet_service"
                                  baseColumnNames="user_id"
                                  baseTableName="transactions"
