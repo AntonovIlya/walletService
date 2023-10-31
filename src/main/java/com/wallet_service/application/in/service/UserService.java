@@ -6,7 +6,6 @@ import com.wallet_service.domain.repository.Log;
 import com.wallet_service.domain.repository.Logger;
 import com.wallet_service.domain.repository.UserRepository;
 
-import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -29,7 +28,7 @@ public class UserService {
     /**
      * Audit system.
      */
-    private final Log usersActionsRepository;
+    private final Log logUserActions;
 
     /**
      * Authorized user.
@@ -39,7 +38,7 @@ public class UserService {
     public UserService() {
         userRepository = new UserRepository();
         transactionService = new TransactionService();
-        usersActionsRepository = new Logger();
+        logUserActions = new Logger("logUserActions");
         scanner = new Scanner(System.in);
     }
 
@@ -74,8 +73,11 @@ public class UserService {
             String login = scanner.nextLine();
             System.out.println("Введите пароль:");
             String password = scanner.nextLine();
-            Optional<User> user = userRepository.getUser(login, password);
-            if (user.isEmpty()) {
+            if (login.equals("admin") && password.equals("admin")) {
+                selectAdminOperation(currentUser);
+                return;
+            }
+            if (!userRepository.isExists(login, password)) {
                 System.out.println("Пользователь с таким логином и паролем не найден.\n");
                 System.out.println("Выберите номер действия:\n" +
                         "  1. Повторить авторизацию\n" +
@@ -94,13 +96,9 @@ public class UserService {
                     }
                 }
             }
-            usersActionsRepository.log("Авторизация пользователя " + login);
-            currentUser = user.get();
-            if (userRepository.isAdmin(login, password)) {
-                selectAdminOperation(currentUser);
-            } else {
-                selectUserOperation(currentUser);
-            }
+            logUserActions.log("Авторизация пользователя " + login);
+            currentUser = userRepository.getUser(login, password);
+            selectUserOperation(currentUser);
             break;
 
         }
@@ -119,9 +117,9 @@ public class UserService {
             String action = scanner.nextLine();
             switch (action) {
                 case ("1") -> {
-                    usersActionsRepository.log("Просмотр истории администратором");
+                    logUserActions.log("Просмотр истории администратором");
                     System.out.println("История: ");
-                    System.out.println(usersActionsRepository.getHistory());
+                    System.out.println(logUserActions.getHistory());
                 }
                 case ("2") -> {
                     return;
@@ -154,7 +152,8 @@ public class UserService {
                     System.out.println(account.getOperationHistory());
                 }
                 case ("5") -> {
-                    usersActionsRepository.log("Действия пользователя " +
+                    userRepository.updateUserData(currentUser);
+                    logUserActions.log("Действия пользователя " +
                             currentUser.getLogin() + ":\n" +
                             account.getOperationHistory());
                     return;
@@ -182,8 +181,9 @@ public class UserService {
                 case ("1"):
                     break;
                 case ("2"):
-                    userRepository.userRegistration(new User(login, password));
-                    usersActionsRepository.log("Регистрация пользователя " + login);
+                    User user = new User(login, password);
+                    userRepository.userRegistration(user);
+                    logUserActions.log("Регистрация пользователя " + login);
                     return;
                 default:
                     System.out.println("Неверная команда, попробуйте снова.\n");

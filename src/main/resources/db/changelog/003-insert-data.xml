@@ -1,0 +1,22 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
+
+    <changeSet id="003-insert-data" author="jadeFour">
+        <addForeignKeyConstraint baseTableSchemaName="wallet_service"
+                                 baseColumnNames="user_id"
+                                 baseTableName="bank_accounts"
+                                 constraintName="fk_bank_accounts_users"
+                                 referencedTableSchemaName="wallet_service"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <addForeignKeyConstraint baseTableSchemaName="wallet_service"
+                                 baseColumnNames="user_id"
+                                 baseTableName="transactions"
+                                 constraintName="fk_transactions_users"
+                                 referencedTableSchemaName="wallet_service"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+</databaseChangeLog>

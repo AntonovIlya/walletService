@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
+
+    <changeSet id="002-create-table" author="jadeFour">
+        <createTable schemaName="wallet_service" tableName="users">
+            <column name="id" type="serial">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="login" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+        </createTable>
+
+        <createTable schemaName="wallet_service" tableName="bank_accounts">
+            <column name="id" type="serial">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="int"/>
+            <column name="balance" type="double precision"/>
+        </createTable>
+
+        <createTable schemaName="wallet_service" tableName="transactions">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="int"/>
+            <column name="payment" type="double precision"/>
+            <column name="refill" type="double precision"/>
+            <column name="date_time" type="timestamp"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

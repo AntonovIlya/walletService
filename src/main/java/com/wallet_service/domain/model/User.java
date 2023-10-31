@@ -1,10 +1,6 @@
 package com.wallet_service.domain.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-
-import java.util.Objects;
+import lombok.*;
 
 /**
  * A class that describes a user of a banking service through authorization using a login and password.
@@ -12,8 +8,12 @@ import java.util.Objects;
 @Getter
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class User {
 
+    @Getter
+    @Setter
+    private int id;
     /**
      * User login.
      */
@@ -30,14 +30,6 @@ public class User {
     /**
      * User's bank account.
      */
-    private final BankAccount account;
-
-    /**
-     * Creates a user with a login and password and links a bank account.
-     */
-    public User(String login, String password) {
-        this.login = login;
-        this.password = password;
-        account = new BankAccount(String.valueOf(Objects.hash(login, password)));
-    }
+    @Setter
+    private BankAccount account;
 }

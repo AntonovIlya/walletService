@@ -9,7 +9,7 @@ class BankAccountTest {
 
     @BeforeAll
     static void beforeAll() {
-        account = new BankAccount("id");
+        account = new BankAccount();
     }
 
     @AfterAll
