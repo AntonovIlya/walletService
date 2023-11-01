@@ -1,0 +1,134 @@
+openapi: 3.0.0
+info:
+  title: Wallet Service API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+    description: local server
+paths:
+  /registration:
+    get:
+      description: Registering a new user using login and password
+      parameters:
+        - name: login
+          in: query
+          required: true
+        - name: password
+          in: query
+          required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    description: Returns the generated access JWT
+                  token_type:
+                    type: string
+                    description: Token type
+  /balance:
+    get:
+      description: Bank account balance request
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: string
+                    description: returns the user's balance
+        '401':
+          description: Error authorization
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error customer message
+  /payment:
+    post:
+      description: Withdrawal request
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Successful customer message
+        '401':
+          description: Error authorization
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error customer message
+  /refill:
+    get:
+      description: Funds replenishment request
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Successful customer message
+        '401':
+          description: Error authorization
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error customer message
