@@ -96,7 +96,7 @@ paths:
                     type: string
                     description: Error customer message
   /refill:
-    get:
+    post:
       description: Funds replenishment request
       parameters:
         - name: Authorization
