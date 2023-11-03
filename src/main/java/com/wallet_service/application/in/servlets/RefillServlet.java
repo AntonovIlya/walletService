@@ -16,6 +16,8 @@ public class RefillServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        //TODO реализовать валидацию токена
+        //TODO реализовать валидацию входящих DTO
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 }
