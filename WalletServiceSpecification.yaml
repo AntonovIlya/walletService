@@ -24,10 +24,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  access_token:
+                  accessToken:
                     type: string
                     description: Returns the generated access JWT
-                  token_type:
+                  tokenType:
                     type: string
                     description: Token type
   /balance:

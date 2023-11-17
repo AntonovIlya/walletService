@@ -43,28 +43,6 @@ public class UserService {
     }
 
     /**
-     * Displays the main operating menu in the console.
-     */
-    public void start() {
-        while (true) {
-            System.out.println("Выберите номер действия:\n" +
-                    "  1. Регистрация\n" +
-                    "  2. Авторизация\n" +
-                    "  3. Выход");
-            String action = scanner.nextLine();
-            switch (action) {
-                case ("1") -> signUp();
-                case ("2") -> signIn();
-                case ("3") -> {
-                    System.out.println("Работа программы завершена.");
-                    return;
-                }
-                default -> System.out.println("Неверная команда, попробуйте снова.\n");
-            }
-        }
-    }
-
-    /**
      * Provides work with the user authorization menu through the console.
      */
     private void signIn() {
@@ -166,28 +144,9 @@ public class UserService {
     /**
      * Provides work with the user registration menu through the console.
      */
-    private void signUp() {
-        while (true) {
-            System.out.println("Введите логин:");
-            String login = scanner.nextLine();
-            System.out.println("Введите пароль:");
-            String password = scanner.nextLine();
-            System.out.println("Подтвердить ввод?\n");
-            System.out.println("Выберите номер действия:\n" +
-                    "  1. Повторить регистрацию.\n" +
-                    "  2. Зарегистрировать пользователя с таким логином.");
-            String action = scanner.nextLine();
-            switch (action) {
-                case ("1"):
-                    break;
-                case ("2"):
-                    User user = new User(login, password);
-                    userRepository.userRegistration(user);
-                    logUserActions.log("Регистрация пользователя " + login);
-                    return;
-                default:
-                    System.out.println("Неверная команда, попробуйте снова.\n");
-            }
-        }
+    public void signUp(String login, String password) {
+        /*User user = new User(login, password);
+        userRepository.userRegistration(user);
+        logUserActions.log("Регистрация пользователя " + login);*/
     }
 }
