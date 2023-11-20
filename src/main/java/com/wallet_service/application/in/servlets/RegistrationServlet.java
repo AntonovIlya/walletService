@@ -36,6 +36,7 @@ public class RegistrationServlet extends HttpServlet {
             //todo вернуть ошибку регистрации
             //Создать класс исключения для будущей реализации Spring
             //Если принимается исключение вернуть в соответствии со спецификацией ответ
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 

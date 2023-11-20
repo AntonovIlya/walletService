@@ -48,12 +48,11 @@ public class DBConnection {
      */
     private static boolean flag = false;
 
-
     /**
      * Parsing connection parameters and establishing a connection.
      */
     public static void startConnection() {
-        File file = new File(".env");
+        File file = new File("C:\\Users\\antonov_ii\\Desktop\\walletService\\.env");
 
         Properties properties = new Properties();
         try {
@@ -66,10 +65,11 @@ public class DBConnection {
         PASSWORD = properties.getProperty("POSTGRES_PASSWORD");
 
         try {
+            Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
             Statement createSchema = connection.createStatement();
             createSchema.execute("create schema if not exists migration;");
-        } catch (SQLException e) {
+        } catch (SQLException|ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
         migration();

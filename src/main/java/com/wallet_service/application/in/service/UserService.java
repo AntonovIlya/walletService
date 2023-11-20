@@ -78,7 +78,6 @@ public class UserService {
             currentUser = userRepository.getUser(login, password);
             selectUserOperation(currentUser);
             break;
-
         }
     }
 
@@ -145,8 +144,12 @@ public class UserService {
      * Provides work with the user registration menu through the console.
      */
     public void signUp(String login, String password) {
-        /*User user = new User(login, password);
+        if (userRepository.isExists(login, password)) {
+            //todo реализовать ошибку регистрации
+            throw new RuntimeException();
+        }
+        User user = new User(login, password);
         userRepository.userRegistration(user);
-        logUserActions.log("Регистрация пользователя " + login);*/
+        logUserActions.log("Регистрация пользователя " + login);
     }
 }
