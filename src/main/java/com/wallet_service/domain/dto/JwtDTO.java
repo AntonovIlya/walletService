@@ -9,7 +9,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class JwtDTO {
 
-    //todo добавить документацию
+    /**
+     * Encoded token.
+     */
     private String accessToken;
+    /**
+     * Web-marker JWT in header of HTTP request.
+     */
     private String tokenType;
 }

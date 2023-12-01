@@ -4,6 +4,9 @@ import com.wallet_service.domain.dto.JwtDTO;
 import com.wallet_service.domain.dto.JwtMapper;
 import com.wallet_service.domain.model.Jwt;
 
+/**
+ * Access token generation and validation class.
+ */
 public class JWTService {
 
     private Jwt jwt;

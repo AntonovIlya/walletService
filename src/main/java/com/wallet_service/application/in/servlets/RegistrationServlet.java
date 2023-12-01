@@ -12,11 +12,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Class handler for a request to register a new user.
+ */
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
 
-    //todo добавить документацию
+    /**
+     * User service.
+     */
     private UserService userService;
+    /**
+     * Access token generation and validation service.
+     */
     private JWTService jwtService;
 
     @Override

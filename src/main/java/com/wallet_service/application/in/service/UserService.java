@@ -146,7 +146,7 @@ public class UserService {
     public void signUp(String login, String password) {
         if (userRepository.isExists(login, password)) {
             //todo реализовать ошибку регистрации
-            throw new RuntimeException();
+            //throw new RuntimeException();
         }
         User user = new User(login, password);
         userRepository.userRegistration(user);
