@@ -9,7 +9,7 @@ import com.wallet_service.domain.model.Jwt;
  */
 public class JWTService {
 
-    private Jwt jwt;
+    private final Jwt jwt;
 
     public JWTService() {
         jwt = new Jwt();
